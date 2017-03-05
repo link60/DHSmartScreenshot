@@ -46,21 +46,27 @@
 {
 	self.screenshotTaken = [self.tableView screenshotExcludingAllHeaders:YES
 													 excludingAllFooters:NO
-														excludingAllRows:NO];
+														excludingAllRows:NO
+                                                     excludingHeaderView:NO
+                                                     excludingFooterView:NO];
 }
 
 - (void)takeScreenshotWithoutFooters
 {
 	self.screenshotTaken = [self.tableView screenshotExcludingAllHeaders:NO
 													 excludingAllFooters:YES
-														excludingAllRows:NO];
+														excludingAllRows:NO
+                                                     excludingHeaderView:NO
+                                                     excludingFooterView:NO];
 }
 
 - (void)takeScreenshotForRowsOnly
 {
 	self.screenshotTaken = [self.tableView screenshotExcludingAllHeaders:YES
 													 excludingAllFooters:YES
-														excludingAllRows:NO];
+														excludingAllRows:NO
+                                                     excludingHeaderView:YES
+                                                     excludingFooterView:YES];
 }
 
 - (void)takeScreenshotForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -77,7 +83,9 @@
 	NSArray *excludedHeadersSections = @[@(0)];
 	self.screenshotTaken = [self.tableView screenshotExcludingHeadersAtSections:[NSSet setWithArray:excludedHeadersSections]
 													 excludingFootersAtSections:nil
-													  excludingRowsAtIndexPaths:nil];
+													  excludingRowsAtIndexPaths:nil
+                                                            excludingHeaderView:NO
+                                                            excludingFooterView:NO];
 }
 
 - (void)takeScreenshoOfJustLastTwoFooters

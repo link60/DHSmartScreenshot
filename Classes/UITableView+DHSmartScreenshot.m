@@ -16,7 +16,9 @@
 {
 	return [self screenshotExcludingHeadersAtSections:nil
 						   excludingFootersAtSections:nil
-							excludingRowsAtIndexPaths:nil];
+							excludingRowsAtIndexPaths:nil
+                                  excludingHeaderView:NO
+                                  excludingFooterView:NO];
 }
 
 - (UIImage *)screenshotOfCellAtIndexPath:(NSIndexPath *)indexPath
@@ -90,7 +92,9 @@
 
 - (UIImage *)screenshotExcludingAllHeaders:(BOOL)withoutHeaders
 					   excludingAllFooters:(BOOL)withoutFooters
-						  excludingAllRows:(BOOL)withoutRows
+                          excludingAllRows:(BOOL)withoutRows
+                       excludingHeaderView:(BOOL)excludingHeaderView
+                       excludingFooterView:(BOOL)excludingFooterView
 {
 	NSArray *excludedHeadersOrFootersSections = nil;
 	if (withoutHeaders || withoutFooters) excludedHeadersOrFootersSections = [self allSectionsIndexes];
@@ -100,17 +104,25 @@
 	
 	return [self screenshotExcludingHeadersAtSections:(withoutHeaders)?[NSSet setWithArray:excludedHeadersOrFootersSections]:nil
 						   excludingFootersAtSections:(withoutFooters)?[NSSet setWithArray:excludedHeadersOrFootersSections]:nil
-							excludingRowsAtIndexPaths:(withoutRows)?[NSSet setWithArray:excludedRows]:nil];
+							excludingRowsAtIndexPaths:(withoutRows)?[NSSet setWithArray:excludedRows]:nil
+                                  excludingHeaderView:excludingHeaderView
+                                  excludingFooterView:excludingFooterView];
 }
 
 - (UIImage *)screenshotExcludingHeadersAtSections:(NSSet *)excludedHeaderSections
 					   excludingFootersAtSections:(NSSet *)excludedFooterSections
 						excludingRowsAtIndexPaths:(NSSet *)excludedIndexPaths
+                              excludingHeaderView:(BOOL)excludingHeaderView
+                              excludingFooterView:(BOOL)excludingFooterView
 {
 	NSMutableArray *screenshots = [NSMutableArray array];
+    
 	// Header Screenshot
-	UIImage *headerScreenshot = [self screenshotOfHeaderView];
-	if (headerScreenshot) [screenshots addObject:headerScreenshot];
+    if(!excludingHeaderView) {
+        UIImage *headerScreenshot = [self screenshotOfHeaderView];
+        if (headerScreenshot) [screenshots addObject:headerScreenshot];
+    }
+    
 	for (int section=0; section<self.numberOfSections; section++) {
 		// Header Screenshot
 		UIImage *headerScreenshot = [self screenshotOfHeaderViewAtSection:section excludedHeaderSections:excludedHeaderSections];
@@ -127,8 +139,12 @@
 		UIImage *footerScreenshot = [self screenshotOfFooterViewAtSection:section excludedFooterSections:excludedFooterSections];
 		if (footerScreenshot) [screenshots addObject:footerScreenshot];
 	}
-	UIImage *footerScreenshot = [self screenshotOfFooterView];
-	if (footerScreenshot) [screenshots addObject:footerScreenshot];
+
+    if(!excludingFooterView) {
+        UIImage *footerScreenshot = [self screenshotOfFooterView];
+        if (footerScreenshot) [screenshots addObject:footerScreenshot];
+    }
+    
 	return [UIImage verticalImageFromArray:screenshots];
 }
 

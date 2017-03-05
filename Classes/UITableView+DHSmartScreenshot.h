@@ -20,11 +20,15 @@
 
 - (UIImage *)screenshotExcludingAllHeaders:(BOOL)withoutHeaders
 					   excludingAllFooters:(BOOL)withoutFooters
-						  excludingAllRows:(BOOL)withoutRows;
+                          excludingAllRows:(BOOL)withoutRows
+                       excludingHeaderView:(BOOL)excludingHeaderView
+                       excludingFooterView:(BOOL)excludingFooterView;
 
 - (UIImage *)screenshotExcludingHeadersAtSections:(NSSet *)headerSections
 					   excludingFootersAtSections:(NSSet *)footerSections
-						excludingRowsAtIndexPaths:(NSSet *)indexPaths;
+                        excludingRowsAtIndexPaths:(NSSet *)indexPaths
+                              excludingHeaderView:(BOOL)excludingHeaderView
+                              excludingFooterView:(BOOL)excludingFooterView;
 
 - (UIImage *)screenshotOfHeadersAtSections:(NSSet *)headerSections
 						 footersAtSections:(NSSet *)footerSections
